@@ -1,59 +1,127 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Gestión de Créditos y Pagos
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicación web desarrollada con Laravel para administrar clientes, créditos y pagos, aplicando relaciones Eloquent, validaciones, reglas de negocio, control de acceso y transacciones de base de datos.
 
-## About Laravel
+## Tecnologías
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.2+
+- Laravel 12
+- MySQL / XAMPP
+- Blade
+- Bootstrap 5
+- PHPUnit
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Funcionalidades principales
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Autenticación y roles
 
-## Learning Laravel
+El sistema maneja tres roles:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- Administrador
+- Empleado
+- Cliente
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Los administradores y empleados pueden gestionar clientes, créditos y pagos.
 
-## Laravel Sponsors
+Los clientes solamente pueden consultar sus propios créditos y pagos.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Módulo de clientes
 
-### Premium Partners
+Permite:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- Registrar clientes.
+- Editar información.
+- Consultar clientes.
+- Desactivar clientes.
+- Consultar clientes según el estado de sus créditos.
 
-## Contributing
+## Módulo de créditos
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Permite:
 
-## Code of Conduct
+- Registrar un crédito para un cliente existente.
+- Calcular automáticamente el total del crédito.
+- Inicializar el saldo pendiente.
+- Calcular automáticamente la fecha de vencimiento según el plazo.
+- Filtrar créditos por estado.
+- Buscar créditos por datos del cliente.
+- Consultar el detalle de cada crédito.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Cálculo del crédito
 
-## Security Vulnerabilities
+El total se calcula como:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+`total_credito = monto + (monto * tasa_interes / 100)`
 
-## License
+Al registrar el crédito:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- El saldo inicial es igual al total del crédito.
+- El estado inicial es `Activo`.
+- La fecha de vencimiento se calcula sumando el plazo en meses a la fecha de otorgamiento.
+
+## Módulo de pagos
+
+Permite:
+
+- Registrar pagos parciales.
+- Registrar pagos completos.
+- Consultar historial general de pagos.
+- Consultar los pagos propios del cliente.
+- Generar comprobantes imprimibles.
+
+### Reglas de pagos
+
+- El monto del pago debe ser mayor a cero.
+- No se permite pagar más que el saldo pendiente.
+- El saldo se actualiza automáticamente.
+- Cuando el saldo llega a `0`, el crédito pasa automáticamente a `Pagado`.
+- Los pagos se registran mediante una transacción de base de datos.
+- Se utiliza bloqueo de fila (`lockForUpdate`) para proteger el saldo ante operaciones concurrentes.
+
+## Estados de los créditos
+
+Los créditos pueden manejar los siguientes estados:
+
+- `Activo`
+- `Pagado`
+- `Vencido`
+
+Un crédito activo con saldo pendiente cuya fecha de vencimiento ya pasó se actualiza automáticamente a `Vencido`.
+
+## Seguridad y permisos
+
+Las rutas administrativas están protegidas mediante autenticación y middleware de roles.
+
+Un usuario con rol Cliente solamente puede consultar:
+
+- Sus propios créditos.
+- Sus propios pagos.
+- Sus propios comprobantes.
+
+El sistema valida explícitamente que un cliente no pueda consultar información perteneciente a otro cliente.
+
+## Base de datos
+
+Las principales tablas del sistema son:
+
+- `users`
+- `roles`
+- `clientes`
+- `creditos`
+- `pagos`
+
+Relaciones principales:
+
+- Un usuario puede estar vinculado a un cliente.
+- Un cliente puede tener muchos créditos.
+- Un crédito pertenece a un cliente.
+- Un crédito puede tener muchos pagos.
+- Un pago pertenece a un crédito.
+
+## Instalación
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/sofia-GM22/Gestion-creditos-pagos.git
+cd Gestion-creditos-pagos
