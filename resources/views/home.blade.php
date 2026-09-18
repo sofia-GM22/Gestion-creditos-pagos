@@ -10,41 +10,69 @@
         </p>
     </div>
 
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Clientes</h5>
-                    <p class="card-text text-muted">
-                        Registra, busca, edita y consulta el historial de crédito de cada cliente.
-                    </p>
-                    <a href="{{ route('clientes.index') }}" class="btn btn-primary">Ir a Clientes</a>
+    @if (auth()->user()->esCliente())
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Mis Créditos</h5>
+                        <p class="card-text text-muted">
+                            Consulta el monto, plazo, saldo pendiente y estado de tus créditos.
+                        </p>
+                        <a href="{{ route('creditos.mios') }}" class="btn btn-primary">Ver mis créditos</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Créditos</h5>
-                    <p class="card-text text-muted">
-                        Consulta clientes según el estado de su crédito: activo, pagado o vencido.
-                    </p>
-                    <a href="{{ route('clientes.por-estado-credito') }}" class="btn btn-primary">Ver por estado</a>
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Mis Pagos</h5>
+                        <p class="card-text text-muted">
+                            Revisa el historial de pagos realizados y descarga tus comprobantes.
+                        </p>
+                        <a href="{{ route('pagos.mios') }}" class="btn btn-primary">Ver mis pagos</a>
+                    </div>
                 </div>
             </div>
         </div>
+    @else
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Clientes</h5>
+                        <p class="card-text text-muted">
+                            Registra, busca, edita y consulta el historial de crédito de cada cliente.
+                        </p>
+                        <a href="{{ route('clientes.index') }}" class="btn btn-primary">Ir a Clientes</a>
+                    </div>
+                </div>
+            </div>
 
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Pagos</h5>
-                    <p class="card-text text-muted">
-                        Próximamente: registro y consulta de pagos realizados.
-                    </p>
-                    <button class="btn btn-secondary" disabled>Próximamente</button>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Créditos</h5>
+                        <p class="card-text text-muted">
+                            Registra nuevos créditos y consulta los activos, pagados y vencidos.
+                        </p>
+                        <a href="{{ route('creditos.index') }}" class="btn btn-primary">Ir a Créditos</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Pagos</h5>
+                        <p class="card-text text-muted">
+                            Registra pagos, valida el saldo y consulta el historial completo.
+                        </p>
+                        <a href="{{ route('pagos.index') }}" class="btn btn-primary">Ir a Pagos</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
 @endsection

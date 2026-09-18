@@ -25,6 +25,12 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'role_id');
     }
 
+    // Cliente vinculado a este usuario (solo aplica si el rol es Cliente)
+    public function cliente()
+    {
+        return $this->hasOne(Cliente::class, 'usuario_id');
+    }
+
     // Métodos de ayuda para no repetir el nombre del rol en todos lados
     public function esAdministrador(): bool
     {

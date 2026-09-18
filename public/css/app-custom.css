@@ -1,0 +1,277 @@
+:root {
+    --app-primary: #2563eb;
+    --app-primary-dark: #1d4ed8;
+    --app-dark: #172033;
+    --app-dark-2: #0f172a;
+    --app-bg: #f4f7fb;
+    --app-card: #ffffff;
+    --app-border: #e5e7eb;
+    --app-text: #172033;
+    --app-muted: #64748b;
+    --app-success: #16a34a;
+    --app-danger: #dc2626;
+}
+
+body.app-body {
+    background: var(--app-bg);
+    color: var(--app-text);
+}
+
+/* Navbar */
+
+/* Navbar */
+
+.app-navbar {
+    min-height: 60px !important;
+    height: auto !important;
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
+    background: linear-gradient(
+        135deg,
+        var(--app-dark-2),
+        var(--app-dark)
+    ) !important;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.16);
+}
+
+.app-navbar .container {
+    min-height: 60px;
+    height: auto;
+    display: flex;
+    align-items: center;
+}
+
+.app-navbar .navbar-brand {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+}
+
+.app-navbar .navbar-collapse {
+    min-height: 0 !important;
+    height: auto !important;
+    align-items: center;
+}
+
+.app-navbar .navbar-nav {
+    align-items: center;
+}
+
+.app-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.72) !important;
+    border-radius: 0.55rem;
+    padding: 0.5rem 0.75rem !important;
+    transition: 0.2s ease;
+}
+
+.app-navbar .nav-link:hover,
+.app-navbar .nav-link.active {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.app-user {
+    color: rgba(255, 255, 255, 0.92);
+    font-weight: 600;
+}
+
+/* Contenido */
+
+.app-main {
+    min-height: calc(100vh - 80px);
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.section-kicker {
+    display: block;
+    margin-bottom: 0.3rem;
+    color: var(--app-primary);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.page-title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 750;
+    letter-spacing: -0.03em;
+}
+
+.page-subtitle {
+    margin: 0.45rem 0 0;
+    color: var(--app-muted);
+}
+
+/* Tarjetas */
+
+.app-card,
+.card {
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.card {
+    overflow: hidden;
+}
+
+.card-title {
+    font-weight: 700;
+}
+
+/* Tablas */
+
+.table {
+    color: var(--app-text);
+}
+
+.table thead th {
+    background: #f8fafc;
+    color: #334155;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border-bottom: 1px solid var(--app-border);
+    white-space: nowrap;
+}
+
+.table tbody td {
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+    border-color: #edf0f4;
+}
+
+.table-hover tbody tr:hover {
+    background: #f8fbff;
+}
+
+/* Formularios */
+
+.form-control,
+.form-select {
+    border-radius: 0.7rem;
+    border-color: #d8dee8;
+    padding: 0.65rem 0.8rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--app-primary);
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.12);
+}
+
+/* Botones */
+
+.btn {
+    border-radius: 0.65rem;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: var(--app-primary);
+    border-color: var(--app-primary);
+}
+
+.btn-primary:hover {
+    background: var(--app-primary-dark);
+    border-color: var(--app-primary-dark);
+}
+
+.btn-success {
+    background: var(--app-success);
+    border-color: var(--app-success);
+}
+
+/* Estados */
+
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px;
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.badge-status-primary {
+    color: #1d4ed8;
+    background: #dbeafe;
+}
+
+.badge-status-success {
+    color: #15803d;
+    background: #dcfce7;
+}
+
+.badge-status-danger {
+    color: #b91c1c;
+    background: #fee2e2;
+}
+
+/* Mensajes */
+
+.alert {
+    border: 0;
+    border-radius: 0.85rem;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+
+/* Estado vacío */
+
+.empty-state {
+    overflow: hidden;
+}
+
+.empty-state-icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: #eff6ff;
+    color: var(--app-primary);
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.empty-state h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.4rem;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+    .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .page-title {
+        font-size: 1.65rem;
+    }
+
+    .app-navbar .navbar-nav {
+        width: 100%;
+    }
+}
+
+/* Evita alturas inesperadas en la navegación */
+nav.app-navbar,
+nav.app-navbar .container,
+nav.app-navbar .navbar-collapse {
+    max-height: none !important;
+}

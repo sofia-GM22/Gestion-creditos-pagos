@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ClienteRequest;
 use App\Models\Cliente;
+use App\Models\Credito;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
@@ -22,6 +23,8 @@ class ClienteController extends Controller
 
     public function porEstadoCredito(Request $request)
     {
+        Credito::actualizarVencidos();
+
         $estado = $request->get('estado_credito', 'Activo');
 
         $clientes = Cliente::whereHas('creditos', function ($q) use ($estado) {
