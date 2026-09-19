@@ -2,9 +2,15 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@yield('titulo', 'Sistema de Gestión de Créditos')</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>
+        @yield('titulo', 'Sistema de Gestión de Créditos')
+    </title>
 
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -19,175 +25,289 @@
 
 <body class="app-body">
 
-    <nav class="navbar navbar-expand-lg navbar-dark app-navbar mb-4">
-        <div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark app-navbar">
 
-            <a class="navbar-brand" href="{{ route('home') }}">
-                Sistema de Gestión de Créditos
-            </a>
+    <div class="container">
 
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#mainNavbar"
-                aria-controls="mainNavbar"
-                aria-expanded="false"
-                aria-label="Mostrar navegación"
-            >
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <a
+            class="navbar-brand"
+            href="{{ route('home') }}"
+        >
+            Sistema de Gestión de Créditos
+        </a>
 
-            <div class="collapse navbar-collapse" id="mainNavbar">
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#appNavbar"
+            aria-controls="appNavbar"
+            aria-expanded="false"
+            aria-label="Mostrar navegación"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                <ul class="navbar-nav me-auto">
+        <div
+            class="collapse navbar-collapse"
+            id="appNavbar"
+        >
 
-                    @if (auth()->user()->esCliente())
+            <ul class="navbar-nav me-auto">
 
-                        {{-- MENÚ DEL CLIENTE --}}
+                <li class="nav-item">
+                    <a
+                        href="{{ route('home') }}"
+                        class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
+                    >
+                        Inicio
+                    </a>
+                </li>
+
+                @if (auth()->user()->esCliente())
+
+                    <li class="nav-item">
+                        <a
+                            href="{{ route('creditos.mios') }}"
+                            class="nav-link {{ request()->routeIs('creditos.mios') ? 'active' : '' }}"
+                        >
+                            Mis Créditos
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a
+                            href="{{ route('pagos.mios') }}"
+                            class="nav-link {{ request()->routeIs('pagos.mios') ? 'active' : '' }}"
+                        >
+                            Mis Pagos
+                        </a>
+                    </li>
+
+                @else
+
+                    <li class="nav-item">
+                        <a
+                            href="{{ route('clientes.index') }}"
+                            class="nav-link {{ request()->routeIs('clientes.*') && !request()->routeIs('clientes.por-estado-credito') ? 'active' : '' }}"
+                        >
+                            Clientes
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a
+                            href="{{ route('clientes.por-estado-credito') }}"
+                            class="nav-link {{ request()->routeIs('clientes.por-estado-credito') ? 'active' : '' }}"
+                        >
+                            Clientes por estado
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a
+                            href="{{ route('creditos.index') }}"
+                            class="nav-link {{ request()->routeIs('creditos.*') ? 'active' : '' }}"
+                        >
+                            Créditos
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a
+                            href="{{ route('pagos.index') }}"
+                            class="nav-link {{ request()->routeIs('pagos.*') ? 'active' : '' }}"
+                        >
+                            Pagos
+                        </a>
+                    </li>
+
+                    @if (auth()->user()->esAdministrador())
 
                         <li class="nav-item">
                             <a
-                                class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
-                                href="{{ route('home') }}"
+                                href="{{ route('empleados.index') }}"
+                                class="nav-link {{ request()->routeIs('empleados.*') ? 'active' : '' }}"
                             >
-                                Inicio
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('creditos.mios') ? 'active' : '' }}"
-                                href="{{ route('creditos.mios') }}"
-                            >
-                                Mis Créditos
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('pagos.mios') ? 'active' : '' }}"
-                                href="{{ route('pagos.mios') }}"
-                            >
-                                Mis Pagos
-                            </a>
-                        </li>
-
-                    @else
-
-                        {{-- MENÚ ADMINISTRADOR / EMPLEADO --}}
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
-                                href="{{ route('home') }}"
-                            >
-                                Inicio
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('clientes.index', 'clientes.create', 'clientes.show', 'clientes.edit') ? 'active' : '' }}"
-                                href="{{ route('clientes.index') }}"
-                            >
-                                Clientes
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('clientes.por-estado-credito') ? 'active' : '' }}"
-                                href="{{ route('clientes.por-estado-credito') }}"
-                            >
-                                Clientes por estado
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('creditos.*') ? 'active' : '' }}"
-                                href="{{ route('creditos.index') }}"
-                            >
-                                Créditos
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('pagos.*') ? 'active' : '' }}"
-                                href="{{ route('pagos.index') }}"
-                            >
-                                Pagos
+                                Empleados
                             </a>
                         </li>
 
                     @endif
 
-                </ul>
+                @endif
 
-                {{-- USUARIO + CERRAR SESIÓN --}}
+            </ul>
 
-                <ul class="navbar-nav align-items-center">
+            <ul class="navbar-nav align-items-center gap-lg-2">
 
-                    <li class="nav-item">
-                        <span class="navbar-text text-light me-3 app-user">
-                            {{ auth()->user()->username }}
-                            ({{ auth()->user()->role->nombre }})
-                        </span>
-                    </li>
+                <li class="nav-item">
+                    <span class="app-user">
+                        {{ auth()->user()->username }}
+                        ({{ auth()->user()->role->nombre }})
+                    </span>
+                </li>
 
-                    <li class="nav-item">
-                        <form
-                            method="POST"
-                            action="{{ route('logout') }}"
+                <li class="nav-item">
+
+                    <form
+                        method="POST"
+                        action="{{ route('logout') }}"
+                        class="m-0"
+                    >
+                        @csrf
+
+                        <button
+                            type="submit"
+                            class="btn btn-sm btn-outline-light"
                         >
-                            @csrf
+                            Cerrar sesión
+                        </button>
+                    </form>
 
-                            <button
-                                type="submit"
-                                class="btn btn-outline-light btn-sm"
-                            >
-                                Cerrar sesión
-                            </button>
-                        </form>
-                    </li>
+                </li>
 
-                </ul>
+            </ul>
 
-            </div>
         </div>
-    </nav>
-
-    {{-- CONTENIDO PRINCIPAL --}}
-
-    <div class="container pb-5 app-main">
-
-        {{-- Mensaje de éxito --}}
-        @if (session('exito'))
-            <div class="alert alert-success">
-                {{ session('exito') }}
-            </div>
-        @endif
-
-        {{-- Errores de validación --}}
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        @yield('content')
 
     </div>
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    ></script>
+</nav>
+
+<main class="container app-main">
+
+    @if (session('success'))
+
+        <div class="alert alert-success app-flash">
+            {{ session('success') }}
+        </div>
+
+    @endif
+
+    @yield('content')
+
+</main>
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('[data-dui]').forEach(function (input) {
+
+        input.addEventListener('input', function () {
+
+            let value = this.value.replace(/\D/g, '').slice(0, 9);
+
+            if (value.length > 8) {
+                value = value.slice(0, 8) + '-' + value.slice(8);
+            }
+
+            this.value = value;
+        });
+
+    });
+
+
+    document.querySelectorAll('[data-telefono-digits]').forEach(function (input) {
+
+        input.addEventListener('input', function () {
+
+            this.value = this.value
+                .replace(/\D/g, '')
+                .slice(0, 8);
+
+        });
+
+    });
+
+
+    document.querySelectorAll('[data-cliente-form]').forEach(function (form) {
+
+        form.addEventListener('submit', function (event) {
+
+            let valido = true;
+
+            const dui = form.querySelector('[data-dui]');
+            const telefono = form.querySelector('[data-telefono-digits]');
+
+            if (dui) {
+
+                const duiError = form.querySelector('[data-dui-error]');
+
+                if (!/^\d{8}-\d$/.test(dui.value)) {
+
+                    valido = false;
+
+                    dui.classList.add('is-invalid');
+
+                    if (duiError) {
+                        duiError.textContent =
+                            'El DUI debe tener 9 dígitos y formato 12345678-9.';
+                    }
+
+                } else {
+
+                    dui.classList.remove('is-invalid');
+
+                    if (duiError) {
+                        duiError.textContent = '';
+                    }
+
+                }
+            }
+
+
+            if (telefono) {
+
+                const telefonoError =
+                    form.querySelector('[data-telefono-error]');
+
+                if (!/^\d{8}$/.test(telefono.value)) {
+
+                    valido = false;
+
+                    telefono.classList.add('is-invalid');
+
+                    if (telefonoError) {
+                        telefonoError.textContent =
+                            'El teléfono debe contener exactamente 8 dígitos.';
+                    }
+
+                } else {
+
+                    telefono.classList.remove('is-invalid');
+
+                    if (telefonoError) {
+                        telefonoError.textContent = '';
+                    }
+
+                }
+            }
+
+
+            if (!valido) {
+                event.preventDefault();
+            }
+
+        });
+
+    });
+
+});
+
+
+window.addEventListener('pageshow', function (event) {
+
+    if (event.persisted) {
+        window.location.reload();
+    }
+
+});
+</script>
 
 </body>
 </html>
