@@ -3,76 +3,175 @@
 @section('titulo', 'Inicio')
 
 @section('content')
-    <div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
-        <h1 class="display-6 fw-bold">Sistema de Gestión de Créditos</h1>
-        <p class="col-md-8 fs-5 text-muted">
-            Administra clientes, créditos y pagos desde un solo lugar.
-        </p>
+
+    <div class="page-header">
+        <div>
+            <span class="section-kicker">
+                Panel principal
+            </span>
+
+            <h1 class="page-title">
+                Sistema de Gestión de Créditos
+            </h1>
+
+            <p class="page-subtitle">
+                Administra clientes, créditos y pagos desde un solo lugar.
+            </p>
+        </div>
     </div>
 
     @if (auth()->user()->esCliente())
+
         <div class="row g-4">
+
             <div class="col-md-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Mis Créditos</h5>
-                        <p class="card-text text-muted">
-                            Consulta el monto, plazo, saldo pendiente y estado de tus créditos.
+                <div class="card app-card h-100">
+                    <div class="card-body p-4">
+
+                        <div class="empty-state-icon mx-0 mb-3">
+                            $
+                        </div>
+
+                        <h2 class="card-title h5 mb-2">
+                            Mis Créditos
+                        </h2>
+
+                        <p class="card-text text-muted mb-4">
+                            Consulta el monto, plazo, saldo pendiente y estado
+                            de tus créditos.
                         </p>
-                        <a href="{{ route('creditos.mios') }}" class="btn btn-primary">Ver mis créditos</a>
+
+                        <a
+                            href="{{ route('creditos.mios') }}"
+                            class="btn btn-primary"
+                        >
+                            Ver mis créditos
+                        </a>
+
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Mis Pagos</h5>
-                        <p class="card-text text-muted">
-                            Revisa el historial de pagos realizados y descarga tus comprobantes.
+                <div class="card app-card h-100">
+                    <div class="card-body p-4">
+
+                        <div class="empty-state-icon mx-0 mb-3">
+                            ✓
+                        </div>
+
+                        <h2 class="card-title h5 mb-2">
+                            Mis Pagos
+                        </h2>
+
+                        <p class="card-text text-muted mb-4">
+                            Revisa el historial de pagos realizados,
+                            saldos posteriores y comprobantes.
                         </p>
-                        <a href="{{ route('pagos.mios') }}" class="btn btn-primary">Ver mis pagos</a>
+
+                        <a
+                            href="{{ route('pagos.mios') }}"
+                            class="btn btn-primary"
+                        >
+                            Ver mis pagos
+                        </a>
+
                     </div>
                 </div>
             </div>
+
         </div>
+
     @else
+
         <div class="row g-4">
+
             <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Clientes</h5>
-                        <p class="card-text text-muted">
-                            Registra, busca, edita y consulta el historial de crédito de cada cliente.
+                <div class="card app-card h-100">
+                    <div class="card-body p-4">
+
+                        <div class="empty-state-icon mx-0 mb-3">
+                            👥
+                        </div>
+
+                        <h2 class="card-title h5 mb-2">
+                            Clientes
+                        </h2>
+
+                        <p class="card-text text-muted mb-4">
+                            Registra, busca, edita y consulta la información
+                            de los clientes y su historial de crédito.
                         </p>
-                        <a href="{{ route('clientes.index') }}" class="btn btn-primary">Ir a Clientes</a>
+
+                        <a
+                            href="{{ route('clientes.index') }}"
+                            class="btn btn-primary"
+                        >
+                            Ir a Clientes
+                        </a>
+
                     </div>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Créditos</h5>
-                        <p class="card-text text-muted">
-                            Registra nuevos créditos y consulta los activos, pagados y vencidos.
+                <div class="card app-card h-100">
+                    <div class="card-body p-4">
+
+                        <div class="empty-state-icon mx-0 mb-3">
+                            $
+                        </div>
+
+                        <h2 class="card-title h5 mb-2">
+                            Créditos
+                        </h2>
+
+                        <p class="card-text text-muted mb-4">
+                            Registra nuevos créditos y consulta los créditos
+                            activos, pagados y vencidos.
                         </p>
-                        <a href="{{ route('creditos.index') }}" class="btn btn-primary">Ir a Créditos</a>
+
+                        <a
+                            href="{{ route('creditos.index') }}"
+                            class="btn btn-primary"
+                        >
+                            Ir a Créditos
+                        </a>
+
                     </div>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Pagos</h5>
-                        <p class="card-text text-muted">
-                            Registra pagos, valida el saldo y consulta el historial completo.
+                <div class="card app-card h-100">
+                    <div class="card-body p-4">
+
+                        <div class="empty-state-icon mx-0 mb-3">
+                            ✓
+                        </div>
+
+                        <h2 class="card-title h5 mb-2">
+                            Pagos
+                        </h2>
+
+                        <p class="card-text text-muted mb-4">
+                            Registra pagos, valida saldos y consulta
+                            el historial completo.
                         </p>
-                        <a href="{{ route('pagos.index') }}" class="btn btn-primary">Ir a Pagos</a>
+
+                        <a
+                            href="{{ route('pagos.index') }}"
+                            class="btn btn-primary"
+                        >
+                            Ir a Pagos
+                        </a>
+
                     </div>
                 </div>
             </div>
+
         </div>
+
     @endif
+
 @endsection

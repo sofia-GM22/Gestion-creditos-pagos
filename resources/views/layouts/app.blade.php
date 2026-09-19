@@ -2,9 +2,15 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@yield('titulo', 'Sistema de Gestión de Créditos')</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>
+        @yield('titulo', 'Sistema de Gestión de Créditos')
+    </title>
 
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -17,507 +23,291 @@
     >
 </head>
 
-<body class="app-body"><nav class="navbar navbar-expand-lg navbar-dark app-navbar">
+<body class="app-body">
 
-        <div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark app-navbar">
 
-            <a class="navbar-brand" href="{{ route('home') }}">
-                Sistema de Gestión de Créditos
-            </a>
+    <div class="container">
 
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#mainNavbar"
-                aria-controls="mainNavbar"
-                aria-expanded="false"
-                aria-label="Mostrar navegación"
-            >
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="mainNavbar">
-
-                <ul class="navbar-nav me-auto">
-
-                    @if (auth()->user()->esCliente())
-
-                        {{-- MENÚ DEL CLIENTE --}}
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
-                                href="{{ route('home') }}"
-                            >
-                                Inicio
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('creditos.mios') ? 'active' : '' }}"
-                                href="{{ route('creditos.mios') }}"
-                            >
-                                Mis Créditos
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('pagos.mios') ? 'active' : '' }}"
-                                href="{{ route('pagos.mios') }}"
-                            >
-                                Mis Pagos
-                            </a>
-                        </li>
-
-                    @else
-
-                        {{-- MENÚ ADMINISTRADOR / EMPLEADO --}}
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
-                                href="{{ route('home') }}"
-                            >
-                                Inicio
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('clientes.index', 'clientes.create', 'clientes.show', 'clientes.edit') ? 'active' : '' }}"
-                                href="{{ route('clientes.index') }}"
-                            >
-                                Clientes
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('clientes.por-estado-credito') ? 'active' : '' }}"
-                                href="{{ route('clientes.por-estado-credito') }}"
-                            >
-                                Clientes por estado
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('creditos.*') ? 'active' : '' }}"
-                                href="{{ route('creditos.index') }}"
-                            >
-                                Créditos
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('pagos.*') ? 'active' : '' }}"
-                                href="{{ route('pagos.index') }}"
-                            >
-                                Pagos
-                            </a>
-                        </li>
-
-                        @if (auth()->user()->esAdministrador())
-    <li class="nav-item">
         <a
-            class="nav-link {{ request()->routeIs('empleados.*') ? 'active' : '' }}"
-            href="{{ route('empleados.index') }}"
+            class="navbar-brand"
+            href="{{ route('home') }}"
         >
-            Empleados
+            Sistema de Gestión de Créditos
         </a>
-    </li>
-@endif
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#appNavbar"
+            aria-controls="appNavbar"
+            aria-expanded="false"
+            aria-label="Mostrar navegación"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+            class="collapse navbar-collapse"
+            id="appNavbar"
+        >
+
+            <ul class="navbar-nav me-auto">
+
+                <li class="nav-item">
+                    <a
+                        href="{{ route('home') }}"
+                        class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
+                    >
+                        Inicio
+                    </a>
+                </li>
+
+                @if (auth()->user()->esCliente())
+
+                    <li class="nav-item">
+                        <a
+                            href="{{ route('creditos.mios') }}"
+                            class="nav-link {{ request()->routeIs('creditos.mios') ? 'active' : '' }}"
+                        >
+                            Mis Créditos
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a
+                            href="{{ route('pagos.mios') }}"
+                            class="nav-link {{ request()->routeIs('pagos.mios') ? 'active' : '' }}"
+                        >
+                            Mis Pagos
+                        </a>
+                    </li>
+
+                @else
+
+                    <li class="nav-item">
+                        <a
+                            href="{{ route('clientes.index') }}"
+                            class="nav-link {{ request()->routeIs('clientes.*') && !request()->routeIs('clientes.por-estado-credito') ? 'active' : '' }}"
+                        >
+                            Clientes
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a
+                            href="{{ route('clientes.por-estado-credito') }}"
+                            class="nav-link {{ request()->routeIs('clientes.por-estado-credito') ? 'active' : '' }}"
+                        >
+                            Clientes por estado
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a
+                            href="{{ route('creditos.index') }}"
+                            class="nav-link {{ request()->routeIs('creditos.*') ? 'active' : '' }}"
+                        >
+                            Créditos
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a
+                            href="{{ route('pagos.index') }}"
+                            class="nav-link {{ request()->routeIs('pagos.*') ? 'active' : '' }}"
+                        >
+                            Pagos
+                        </a>
+                    </li>
+
+                    @if (auth()->user()->esAdministrador())
+
+                        <li class="nav-item">
+                            <a
+                                href="{{ route('empleados.index') }}"
+                                class="nav-link {{ request()->routeIs('empleados.*') ? 'active' : '' }}"
+                            >
+                                Empleados
+                            </a>
+                        </li>
 
                     @endif
 
-                </ul>
+                @endif
 
-                {{-- USUARIO + CERRAR SESIÓN --}}
+            </ul>
 
-                <ul class="navbar-nav align-items-center">
+            <ul class="navbar-nav align-items-center gap-lg-2">
 
-                    <li class="nav-item">
-                        <span class="navbar-text text-light me-3 app-user">
-                            {{ auth()->user()->username }}
-                            ({{ auth()->user()->role->nombre }})
-                        </span>
-                    </li>
+                <li class="nav-item">
+                    <span class="app-user">
+                        {{ auth()->user()->username }}
+                        ({{ auth()->user()->role->nombre }})
+                    </span>
+                </li>
 
-                    <li class="nav-item">
-                        <form
-                            method="POST"
-                            action="{{ route('logout') }}"
+                <li class="nav-item">
+
+                    <form
+                        method="POST"
+                        action="{{ route('logout') }}"
+                        class="m-0"
+                    >
+                        @csrf
+
+                        <button
+                            type="submit"
+                            class="btn btn-sm btn-outline-light"
                         >
-                            @csrf
+                            Cerrar sesión
+                        </button>
+                    </form>
 
-                            <button
-                                type="submit"
-                                class="btn btn-outline-light btn-sm"
-                            >
-                                Cerrar sesión
-                            </button>
-                        </form>
-                    </li>
+                </li>
 
-                </ul>
+            </ul>
 
-            </div>
         </div>
 
-    </nav>
+    </div>
 
-    <main class="container pb-5 app-main">
+</nav>
 
-        {{-- Mensaje de éxito --}}
+<main class="container app-main">
 
-        @if (session('exito'))
-            <div
-                class="alert alert-success app-flash"
-                role="alert"
-            >
-                {{ session('exito') }}
-            </div>
-        @endif
+    @if (session('success'))
 
-        @yield('content')
+        <div class="alert alert-success app-flash">
+            {{ session('success') }}
+        </div>
 
-    </main>
+    @endif
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    ></script>
+    @yield('content')
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
+</main>
 
-            /*
-             * ============================
-             * FORMATO DEL DUI
-             * ============================
-             */
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
 
-            document.querySelectorAll('[data-dui]').forEach((input) => {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
 
-                const formatearDui = () => {
+    document.querySelectorAll('[data-dui]').forEach(function (input) {
 
-                    const valor = input.value
-                        .replace(/\D/g, '')
-                        .slice(0, 9);
+        input.addEventListener('input', function () {
 
-                    if (valor.length <= 8) {
-                        input.value = valor;
-                        return;
+            let value = this.value.replace(/\D/g, '').slice(0, 9);
+
+            if (value.length > 8) {
+                value = value.slice(0, 8) + '-' + value.slice(8);
+            }
+
+            this.value = value;
+        });
+
+    });
+
+
+    document.querySelectorAll('[data-telefono-digits]').forEach(function (input) {
+
+        input.addEventListener('input', function () {
+
+            this.value = this.value
+                .replace(/\D/g, '')
+                .slice(0, 8);
+
+        });
+
+    });
+
+
+    document.querySelectorAll('[data-cliente-form]').forEach(function (form) {
+
+        form.addEventListener('submit', function (event) {
+
+            let valido = true;
+
+            const dui = form.querySelector('[data-dui]');
+            const telefono = form.querySelector('[data-telefono-digits]');
+
+            if (dui) {
+
+                const duiError = form.querySelector('[data-dui-error]');
+
+                if (!/^\d{8}-\d$/.test(dui.value)) {
+
+                    valido = false;
+
+                    dui.classList.add('is-invalid');
+
+                    if (duiError) {
+                        duiError.textContent =
+                            'El DUI debe tener 9 dígitos y formato 12345678-9.';
                     }
 
-                    input.value =
-                        valor.slice(0, 8) + '-' + valor.slice(8);
-                };
+                } else {
 
-                input.addEventListener(
-                    'input',
-                    formatearDui
-                );
+                    dui.classList.remove('is-invalid');
 
-                formatearDui();
-            });
+                    if (duiError) {
+                        duiError.textContent = '';
+                    }
 
-
-            /*
-             * ============================
-             * SOLO NÚMEROS EN TELÉFONO
-             * ============================
-             */
-
-            document
-                .querySelectorAll('[data-telefono-digits]')
-                .forEach((input) => {
-
-                    const soloNumeros = () => {
-
-                        input.value = input.value
-                            .replace(/\D/g, '');
-                    };
-
-                    input.addEventListener(
-                        'input',
-                        soloNumeros
-                    );
-
-                    soloNumeros();
-                });
-
-
-            /*
-             * ============================
-             * VALIDACIÓN DEL CLIENTE
-             * ============================
-             */
-
-            document
-                .querySelectorAll('[data-cliente-form]')
-                .forEach((form) => {
-
-                    form.querySelectorAll('input')
-                        .forEach((input) => {
-
-                            input.addEventListener(
-                                'input',
-                                () => limpiarError(input)
-                            );
-
-                        });
-
-
-                    form.addEventListener(
-                        'submit',
-                        (event) => {
-
-                            let formularioValido = true;
-                            let primerError = null;
-
-                            limpiarErrores(form);
-
-
-                            const nombres =
-                                form.querySelector(
-                                    '[name="nombres"]'
-                                );
-
-                            const apellidos =
-                                form.querySelector(
-                                    '[name="apellidos"]'
-                                );
-
-                            const dui =
-                                form.querySelector(
-                                    '[name="documento_identidad"]'
-                                );
-
-                            const telefono =
-                                form.querySelector(
-                                    '[name="telefono"]'
-                                );
-
-                            const correo =
-                                form.querySelector(
-                                    '[name="correo"]'
-                                );
-
-
-                            /*
-                             * NOMBRES
-                             */
-
-                            if (!nombres.value.trim()) {
-
-                                mostrarError(
-                                    nombres,
-                                    'El nombre del cliente es obligatorio.'
-                                );
-
-                                formularioValido = false;
-                                primerError ??= nombres;
-                            }
-
-
-                            /*
-                             * APELLIDOS
-                             */
-
-                            if (!apellidos.value.trim()) {
-
-                                mostrarError(
-                                    apellidos,
-                                    'El apellido del cliente es obligatorio.'
-                                );
-
-                                formularioValido = false;
-                                primerError ??= apellidos;
-                            }
-
-
-                            /*
-                             * DUI
-                             */
-
-                            if (!/^\d{8}-\d$/.test(dui.value)) {
-
-                                mostrarError(
-                                    dui,
-                                    'El DUI debe tener el formato 12345678-9.'
-                                );
-
-                                formularioValido = false;
-                                primerError ??= dui;
-                            }
-
-
-                            /*
-                             * TELÉFONO
-                             */
-
-                            if (
-    telefono.value.trim() &&
-    !/^\d{8}$/.test(telefono.value)
-) {
-    mostrarError(
-        telefono,
-        'El teléfono debe tener exactamente 8 dígitos.'
-    );
-
-    formularioValido = false;
-    primerError ??= telefono;
-}
-
-
-                            /*
-                             * CORREO
-                             */
-
-                            if (
-                                correo.value.trim() &&
-                                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo.value)
-                            ) {
-
-                                mostrarError(
-                                    correo,
-                                    'Ingresa un correo electrónico válido.'
-                                );
-
-                                formularioValido = false;
-                                primerError ??= correo;
-                            }
-
-
-                            /*
-                             * SI HAY ERRORES
-                             * NO SE ENVÍA EL FORMULARIO.
-                             */
-
-                            if (!formularioValido) {
-
-                                event.preventDefault();
-
-                                if (primerError) {
-                                    primerError.focus();
-                                }
-                            }
-
-                        }
-                    );
-
-                });
-
-
-            /*
-             * ============================
-             * MOSTRAR ERROR
-             * ============================
-             */
-
-            function mostrarError(input, mensaje) {
-
-                input.classList.add('is-invalid');
-
-                let feedback =
-                    input.parentElement.querySelector(
-                        '.client-field-error'
-                    );
-
-                if (!feedback) {
-
-                    feedback =
-                        document.createElement('div');
-
-                    feedback.className =
-                        'invalid-feedback d-block client-field-error';
-
-                    input.insertAdjacentElement(
-                        'afterend',
-                        feedback
-                    );
                 }
-
-                feedback.textContent = mensaje;
             }
 
 
-            /*
-             * ============================
-             * LIMPIAR ERROR DE UN CAMPO
-             * ============================
-             */
+            if (telefono) {
 
-            function limpiarError(input) {
+                const telefonoError =
+                    form.querySelector('[data-telefono-error]');
 
-                input.classList.remove(
-                    'is-invalid'
-                );
+                if (!/^\d{8}$/.test(telefono.value)) {
 
-                input.parentElement
-                    .querySelectorAll('.invalid-feedback')
-                    .forEach((feedback) => {
-                        feedback.remove();
-                    });
+                    valido = false;
 
-                input.parentElement
-                    .querySelectorAll('.client-field-error')
-                    .forEach((feedback) => {
-                        feedback.remove();
-                    });
+                    telefono.classList.add('is-invalid');
+
+                    if (telefonoError) {
+                        telefonoError.textContent =
+                            'El teléfono debe contener exactamente 8 dígitos.';
+                    }
+
+                } else {
+
+                    telefono.classList.remove('is-invalid');
+
+                    if (telefonoError) {
+                        telefonoError.textContent = '';
+                    }
+
+                }
             }
 
 
-            /*
-             * ============================
-             * LIMPIAR ERRORES DEL FORMULARIO
-             * ============================
-             */
-
-            function limpiarErrores(form) {
-
-                form.querySelectorAll(
-                    '.invalid-feedback'
-                ).forEach((feedback) => {
-                    feedback.remove();
-                });
-
-                form.querySelectorAll(
-                    '.client-field-error'
-                ).forEach((feedback) => {
-                    feedback.remove();
-                });
-
-                form.querySelectorAll(
-                    '.is-invalid'
-                ).forEach((input) => {
-                    input.classList.remove(
-                        'is-invalid'
-                    );
-                });
+            if (!valido) {
+                event.preventDefault();
             }
 
+        });
+
+    });
+
+});
 
 
+window.addEventListener('pageshow', function (event) {
 
-            /*
- * ==========================================
- * EVITAR RESTAURAR PÁGINAS PRIVADAS DESDE
- * EL HISTORIAL DEL NAVEGADOR
- * ==========================================
- */
-
-window.addEventListener('pageshow', (event) => {
     if (event.persisted) {
         window.location.reload();
     }
+
 });
-        });
-    </script>
+</script>
 
 </body>
 </html>
