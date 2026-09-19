@@ -91,6 +91,75 @@ class CreditoPagoTest extends TestCase
         );
     }
 
+    public function test_rechaza_credito_con_monto_menor_a_200(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->from(
+            route('creditos.create')
+        )->post(route('creditos.store'), [
+            'cliente_id' => $this->cliente->id,
+            'fecha_otorgamiento' => '2026-09-17',
+            'monto' => 199.99,
+            'tasa_interes' => 10,
+            'plazo' => 12,
+        ]);
+
+        $response->assertRedirect(route('creditos.create'));
+        $response->assertSessionHasErrors([
+            'monto' => 'El monto mínimo del crédito es de $200.00.',
+        ]);
+
+        $this->assertDatabaseMissing('creditos', [
+            'cliente_id' => $this->cliente->id,
+            'monto' => 199.99,
+        ]);
+    }
+
+    public function test_acepta_credito_con_monto_minimo_de_200(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->post(route('creditos.store'), [
+            'cliente_id' => $this->cliente->id,
+            'fecha_otorgamiento' => '2026-09-17',
+            'monto' => 200.00,
+            'tasa_interes' => 10,
+            'plazo' => 12,
+        ]);
+
+        $response->assertRedirect();
+
+        $this->assertDatabaseHas('creditos', [
+            'cliente_id' => $this->cliente->id,
+            'monto' => 200.00,
+            'total_credito' => 220.00,
+            'saldo' => 220.00,
+        ]);
+    }
+
+    public function test_acepta_credito_con_monto_mayor_al_minimo(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->post(route('creditos.store'), [
+            'cliente_id' => $this->cliente->id,
+            'fecha_otorgamiento' => '2026-09-17',
+            'monto' => 200.01,
+            'tasa_interes' => 10,
+            'plazo' => 12,
+        ]);
+
+        $response->assertRedirect();
+
+        $this->assertDatabaseHas('creditos', [
+            'cliente_id' => $this->cliente->id,
+            'monto' => 200.01,
+            'total_credito' => 220.01,
+            'saldo' => 220.01,
+        ]);
+    }
+
     public function test_pago_parcial_actualiza_el_saldo(): void
     {
         $this->actingAs($this->admin);
