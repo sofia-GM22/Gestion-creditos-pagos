@@ -121,6 +121,17 @@
                             </a>
                         </li>
 
+                        @if (auth()->user()->esAdministrador())
+    <li class="nav-item">
+        <a
+            class="nav-link {{ request()->routeIs('empleados.*') ? 'active' : '' }}"
+            href="{{ route('empleados.index') }}"
+        >
+            Empleados
+        </a>
+    </li>
+@endif
+
                     @endif
 
                 </ul>

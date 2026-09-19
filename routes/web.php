@@ -5,6 +5,8 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreditoController;
 use App\Http\Controllers\PagoController;
+use App\Http\Controllers\EmpleadoController;
+
 
 Route::get('/login', [AuthController::class, 'mostrarFormulario'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
@@ -39,6 +41,33 @@ Route::middleware([
     // Historial general de pagos (BL-34)
     Route::get('pagos', [PagoController::class, 'index'])->name('pagos.index');
 });
+
+// Gestión exclusiva de empleados para Administradores
+Route::middleware([
+    'auth',
+    'no.cache',
+    'role:Administrador',
+])->group(function () {
+    Route::get('empleados', [EmpleadoController::class, 'index'])
+        ->name('empleados.index');
+
+    Route::get('empleados/crear', [EmpleadoController::class, 'create'])
+        ->name('empleados.create');
+
+    Route::post('empleados', [EmpleadoController::class, 'store'])
+        ->name('empleados.store');
+
+    Route::get('empleados/{empleado}/editar', [EmpleadoController::class, 'edit'])
+        ->name('empleados.edit');
+
+    Route::put('empleados/{empleado}', [EmpleadoController::class, 'update'])
+        ->name('empleados.update');
+
+    Route::patch('empleados/{empleado}/desactivar', [EmpleadoController::class, 'desactivar'])
+        ->name('empleados.desactivar');
+});
+
+
 
 // Detalle de crédito y comprobante de pago: accesibles para cualquier
 // usuario autenticado, pero el controlador valida que un Cliente solo
