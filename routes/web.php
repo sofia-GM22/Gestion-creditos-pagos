@@ -12,9 +12,13 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/', function () {
     return view('home');
-})->middleware('auth')->name('home');
+})->middleware(['auth', 'no.cache'])->name('home');
 
-Route::middleware(['auth', 'role:Administrador,Empleado'])->group(function () {
+Route::middleware([
+    'auth',
+    'no.cache',
+    'role:Administrador,Empleado'
+])->group(function () {
     Route::get('clientes/por-estado-credito', [ClienteController::class, 'porEstadoCredito'])
         ->name('clientes.por-estado-credito');
 
@@ -39,13 +43,17 @@ Route::middleware(['auth', 'role:Administrador,Empleado'])->group(function () {
 // Detalle de crédito y comprobante de pago: accesibles para cualquier
 // usuario autenticado, pero el controlador valida que un Cliente solo
 // pueda ver sus propios créditos y pagos.
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'no.cache'])->group(function () {
     Route::get('creditos/{credito}', [CreditoController::class, 'show'])->name('creditos.show');
     Route::get('pagos/{pago}', [PagoController::class, 'show'])->name('pagos.show');
 });
 
 // Vistas exclusivas del rol Cliente
-Route::middleware(['auth', 'role:Cliente'])->group(function () {
+Route::middleware([
+    'auth',
+    'no.cache',
+    'role:Cliente'
+])->group(function () {
     Route::get('mis-creditos', [CreditoController::class, 'misCreditos'])->name('creditos.mios');
     Route::get('mis-pagos', [PagoController::class, 'misPagos'])->name('pagos.mios');
 });

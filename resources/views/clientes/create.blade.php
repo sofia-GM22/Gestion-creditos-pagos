@@ -1,44 +1,133 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('titulo', 'Nuevo Cliente')
 
 @section('content')
-    <h1 class="h3 mb-4">Nuevo Cliente</h1>
+    <div class="page-header">
+        <div>
+            <span class="section-kicker">Gestión de clientes</span>
+            <h1 class="page-title">Nuevo cliente</h1>
+            <p class="page-subtitle">
+                Registra la información del cliente para habilitar su gestión de créditos.
+            </p>
+        </div>
+    </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <form method="POST" action="{{ route('clientes.store') }}">
+    <div class="card app-card">
+        <div class="card-body p-4 p-lg-5">
+            <form method="POST"
+      action="{{ route('clientes.store') }}"
+      novalidate
+      data-cliente-form>
                 @csrf
 
-                <div class="row g-3">
+                <div class="row g-4">
                     <div class="col-md-6">
-                        <label class="form-label">Nombres</label>
-                        <input type="text" name="nombres" value="{{ old('nombres') }}" class="form-control">
+                        <label for="nombres" class="form-label">Nombres</label>
+                        <input
+                            id="nombres"
+                            type="text"
+                            name="nombres"
+                            value="{{ old('nombres') }}"
+                            class="form-control @error('nombres') is-invalid @enderror"
+                            autocomplete="given-name"
+                            required
+                        >
+                        @error('nombres')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
+
                     <div class="col-md-6">
-                        <label class="form-label">Apellidos</label>
-                        <input type="text" name="apellidos" value="{{ old('apellidos') }}" class="form-control">
+                        <label for="apellidos" class="form-label">Apellidos</label>
+                        <input
+                            id="apellidos"
+                            type="text"
+                            name="apellidos"
+                            value="{{ old('apellidos') }}"
+                            class="form-control @error('apellidos') is-invalid @enderror"
+                            autocomplete="family-name"
+                            required
+                        >
+                        @error('apellidos')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
+
                     <div class="col-md-6">
-                        <label class="form-label">Documento de identidad</label>
-                        <input type="text" name="documento_identidad" value="{{ old('documento_identidad') }}" class="form-control">
+                        <label for="documento_identidad" class="form-label">Documento de identidad (DUI)</label>
+                        <input
+                            id="documento_identidad"
+                            type="text"
+                            name="documento_identidad"
+                            value="{{ old('documento_identidad') }}"
+                            class="form-control @error('documento_identidad') is-invalid @enderror"
+                            placeholder="12345678-9"
+                            maxlength="10"
+                            inputmode="numeric"
+                            autocomplete="off"
+                            data-dui
+                            required
+                        >
+                        <div class="form-text">Ingresa los 9 dígitos; el guion se colocará automáticamente.</div>
+                        @error('documento_identidad')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
+
                     <div class="col-md-6">
-                        <label class="form-label">Teléfono</label>
-                        <input type="text" name="telefono" value="{{ old('telefono') }}" class="form-control">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input
+    id="telefono"
+    type="tel"
+    name="telefono"
+    value="{{ old('telefono') }}"
+    class="form-control @error('telefono') is-invalid @enderror"
+    inputmode="numeric"
+    maxlength="8"
+    minlength="8"
+    autocomplete="tel"
+    data-telefono-digits
+>
+                        <div class="form-text">Debe contener exactamente 8 dígitos.</div>
+                        @error('telefono')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
+
                     <div class="col-md-6">
-                        <label class="form-label">Correo</label>
-                        <input type="email" name="correo" value="{{ old('correo') }}" class="form-control">
+                        <label for="correo" class="form-label">Correo</label>
+                        <input
+                            id="correo"
+                            type="email"
+                            name="correo"
+                            value="{{ old('correo') }}"
+                            class="form-control @error('correo') is-invalid @enderror"
+                            autocomplete="email"
+                        >
+                        @error('correo')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
+
                     <div class="col-md-6">
-                        <label class="form-label">Dirección</label>
-                        <input type="text" name="direccion" value="{{ old('direccion') }}" class="form-control">
+                        <label for="direccion" class="form-label">Dirección</label>
+                        <input
+                            id="direccion"
+                            type="text"
+                            name="direccion"
+                            value="{{ old('direccion') }}"
+                            class="form-control @error('direccion') is-invalid @enderror"
+                            autocomplete="street-address"
+                        >
+                        @error('direccion')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-success">Guardar</button>
+                <div class="form-actions mt-4 pt-3">
+                    <button type="submit" class="btn btn-success">Guardar cliente</button>
                     <a href="{{ route('clientes.index') }}" class="btn btn-outline-secondary">Cancelar</a>
                 </div>
             </form>

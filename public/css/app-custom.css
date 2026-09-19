@@ -12,25 +12,47 @@
     --app-danger: #dc2626;
 }
 
-body.app-body {
-    background: var(--app-bg);
-    color: var(--app-text);
+/* ================================
+   BASE
+   ================================ */
+
+html,
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 100%;
 }
 
-/* Navbar */
+html {
+    height: 100%;
+}
 
-/* Navbar */
+body.app-body {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 100vh;
+    background: var(--app-bg);
+    color: var(--app-text);
+    overflow-x: hidden;
+}
+
+/* ================================
+   NAVBAR
+   ================================ */
 
 .app-navbar {
+    margin: 0 !important;
     min-height: 60px !important;
     height: auto !important;
     padding-top: 0.35rem !important;
     padding-bottom: 0.35rem !important;
+
     background: linear-gradient(
         135deg,
         var(--app-dark-2),
         var(--app-dark)
     ) !important;
+
     box-shadow: 0 4px 18px rgba(15, 23, 42, 0.16);
 }
 
@@ -75,10 +97,13 @@ body.app-body {
     font-weight: 600;
 }
 
-/* Contenido */
+/* ================================
+   CONTENIDO
+   ================================ */
 
 .app-main {
-    min-height: calc(100vh - 80px);
+    min-height: calc(100vh - 60px);
+    padding-top: 0;
 }
 
 .page-header {
@@ -111,7 +136,9 @@ body.app-body {
     color: var(--app-muted);
 }
 
-/* Tarjetas */
+/* ================================
+   TARJETAS
+   ================================ */
 
 .app-card,
 .card {
@@ -128,7 +155,9 @@ body.app-body {
     font-weight: 700;
 }
 
-/* Tablas */
+/* ================================
+   TABLAS
+   ================================ */
 
 .table {
     color: var(--app-text);
@@ -154,7 +183,9 @@ body.app-body {
     background: #f8fbff;
 }
 
-/* Formularios */
+/* ================================
+   FORMULARIOS
+   ================================ */
 
 .form-control,
 .form-select {
@@ -169,7 +200,22 @@ body.app-body {
     box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.12);
 }
 
-/* Botones */
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: var(--app-danger);
+}
+
+.invalid-feedback {
+    color: var(--app-danger);
+}
+
+.form-text {
+    color: var(--app-muted);
+}
+
+/* ================================
+   BOTONES
+   ================================ */
 
 .btn {
     border-radius: 0.65rem;
@@ -191,7 +237,15 @@ body.app-body {
     border-color: var(--app-success);
 }
 
-/* Estados */
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ================================
+   ESTADOS
+   ================================ */
 
 .badge-status {
     display: inline-flex;
@@ -219,7 +273,9 @@ body.app-body {
     background: #fee2e2;
 }
 
-/* Mensajes */
+/* ================================
+   MENSAJES
+   ================================ */
 
 .alert {
     border: 0;
@@ -227,7 +283,13 @@ body.app-body {
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
-/* Estado vacío */
+.app-flash {
+    margin-top: 1rem;
+}
+
+/* ================================
+   ESTADO VACÍO
+   ================================ */
 
 .empty-state {
     overflow: hidden;
@@ -252,7 +314,9 @@ body.app-body {
     margin-bottom: 0.4rem;
 }
 
-/* Responsive */
+/* ================================
+   RESPONSIVE
+   ================================ */
 
 @media (max-width: 768px) {
     .page-header {
@@ -267,9 +331,16 @@ body.app-body {
     .app-navbar .navbar-nav {
         width: 100%;
     }
+
+    .form-actions {
+        flex-wrap: wrap;
+    }
 }
 
-/* Evita alturas inesperadas en la navegación */
+/* ================================
+   EVITAR ALTURAS EXTRAÑAS
+   ================================ */
+
 nav.app-navbar,
 nav.app-navbar .container,
 nav.app-navbar .navbar-collapse {
