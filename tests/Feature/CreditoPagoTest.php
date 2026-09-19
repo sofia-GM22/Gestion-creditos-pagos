@@ -341,4 +341,163 @@ class CreditoPagoTest extends TestCase
 
         $response->assertForbidden();
     }
+
+        public function test_cliente_puede_ver_formulario_de_pago_de_su_propio_credito(): void
+    {
+        $credito = Credito::create([
+            'cliente_id' => $this->cliente->id,
+            'fecha_otorgamiento' => '2026-09-17',
+            'monto' => 500,
+            'tasa_interes' => 10,
+            'plazo' => 12,
+            'total_credito' => 550,
+            'saldo' => 550,
+            'fecha_vencimiento' => '2027-09-17',
+            'estado' => 'Activo',
+        ]);
+
+        $this->actingAs($this->clienteUsuario);
+
+        $response = $this->get(route('pagos.create', $credito));
+
+        $response->assertOk();
+        $response->assertSee('Registrar Pago');
+        $response->assertSee('550.00');
+    }
+
+    public function test_cliente_puede_registrar_pago_de_su_propio_credito(): void
+    {
+        $credito = Credito::create([
+            'cliente_id' => $this->cliente->id,
+            'fecha_otorgamiento' => '2026-09-17',
+            'monto' => 500,
+            'tasa_interes' => 10,
+            'plazo' => 12,
+            'total_credito' => 550,
+            'saldo' => 550,
+            'fecha_vencimiento' => '2027-09-17',
+            'estado' => 'Activo',
+        ]);
+
+        $this->actingAs($this->clienteUsuario);
+
+        $response = $this->post(
+            route('pagos.store', $credito),
+            [
+                'fecha_pago' => '2026-09-18',
+                'monto' => 100,
+                'referencia' => 'CLIENTE-001',
+                'observaciones' => 'Pago realizado por el cliente',
+            ]
+        );
+
+        $response->assertRedirect();
+
+        $credito->refresh();
+
+        $this->assertSame('450.00', $credito->saldo);
+        $this->assertSame('Activo', $credito->estado);
+
+        $this->assertDatabaseHas('pagos', [
+            'credito_id' => $credito->id,
+            'monto' => 100.00,
+            'referencia' => 'CLIENTE-001',
+        ]);
+    }
+
+    public function test_cliente_no_puede_ver_formulario_de_pago_de_otro_cliente(): void
+    {
+        $otroUsuario = User::create([
+            'role_id' => $this->clienteRole->id,
+            'username' => 'Carlos',
+            'password' => Hash::make('Prueba123'),
+            'estado' => 'Activo',
+        ]);
+
+        $otroCliente = Cliente::create([
+            'usuario_id' => $otroUsuario->id,
+            'nombres' => 'Carlos',
+            'apellidos' => 'Prueba',
+            'documento_identidad' => '22222222-2',
+            'telefono' => null,
+            'correo' => null,
+            'direccion' => null,
+            'estado' => 'Activo',
+        ]);
+
+        $credito = Credito::create([
+            'cliente_id' => $otroCliente->id,
+            'fecha_otorgamiento' => '2026-09-17',
+            'monto' => 500,
+            'tasa_interes' => 10,
+            'plazo' => 12,
+            'total_credito' => 550,
+            'saldo' => 550,
+            'fecha_vencimiento' => '2027-09-17',
+            'estado' => 'Activo',
+        ]);
+
+        $this->actingAs($this->clienteUsuario);
+
+        $response = $this->get(route('pagos.create', $credito));
+
+        $response->assertForbidden();
+    }
+
+    public function test_cliente_no_puede_registrar_pago_de_otro_cliente(): void
+    {
+        $otroUsuario = User::create([
+            'role_id' => $this->clienteRole->id,
+            'username' => 'Carlos',
+            'password' => Hash::make('Prueba123'),
+            'estado' => 'Activo',
+        ]);
+
+        $otroCliente = Cliente::create([
+            'usuario_id' => $otroUsuario->id,
+            'nombres' => 'Carlos',
+            'apellidos' => 'Prueba',
+            'documento_identidad' => '22222222-2',
+            'telefono' => null,
+            'correo' => null,
+            'direccion' => null,
+            'estado' => 'Activo',
+        ]);
+
+        $credito = Credito::create([
+            'cliente_id' => $otroCliente->id,
+            'fecha_otorgamiento' => '2026-09-17',
+            'monto' => 500,
+            'tasa_interes' => 10,
+            'plazo' => 12,
+            'total_credito' => 550,
+            'saldo' => 550,
+            'fecha_vencimiento' => '2027-09-17',
+            'estado' => 'Activo',
+        ]);
+
+        $this->actingAs($this->clienteUsuario);
+
+        $response = $this->post(
+            route('pagos.store', $credito),
+            [
+                'fecha_pago' => '2026-09-18',
+                'monto' => 100,
+                'referencia' => 'PAGO-NO-AUTORIZADO',
+            ]
+        );
+
+        $response->assertForbidden();
+
+        $credito->refresh();
+
+        $this->assertSame('550.00', $credito->saldo);
+
+        $this->assertDatabaseMissing('pagos', [
+            'credito_id' => $credito->id,
+            'referencia' => 'PAGO-NO-AUTORIZADO',
+        ]);
+    }
+
+
 }

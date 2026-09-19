@@ -32,7 +32,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="h5 mb-0">Historial de pagos</h2>
-        @if ($credito->saldo > 0 && ! auth()->user()->esCliente())
+        @if ($credito->saldo > 0)
             <a href="{{ route('pagos.create', $credito) }}" class="btn btn-success btn-sm">+ Registrar pago</a>
         @endif
     </div>

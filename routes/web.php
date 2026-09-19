@@ -30,17 +30,37 @@ Route::middleware([
         ->name('clientes.desactivar');
 
     // Panel de créditos (registrar, listar, filtrar por estado)
-    Route::get('creditos', [CreditoController::class, 'index'])->name('creditos.index');
-    Route::get('creditos/crear', [CreditoController::class, 'create'])->name('creditos.create');
-    Route::post('creditos', [CreditoController::class, 'store'])->name('creditos.store');
+    Route::get('creditos', [CreditoController::class, 'index'])
+        ->name('creditos.index');
 
-    // Registrar un pago sobre un crédito específico
-    Route::get('creditos/{credito}/pagos/crear', [PagoController::class, 'create'])->name('pagos.create');
-    Route::post('creditos/{credito}/pagos', [PagoController::class, 'store'])->name('pagos.store');
+    Route::get('creditos/crear', [CreditoController::class, 'create'])
+        ->name('creditos.create');
 
-    // Historial general de pagos (BL-34)
-    Route::get('pagos', [PagoController::class, 'index'])->name('pagos.index');
+    Route::post('creditos', [CreditoController::class, 'store'])
+        ->name('creditos.store');
+
+    // Historial general de pagos
+    Route::get('pagos', [PagoController::class, 'index'])
+        ->name('pagos.index');
 });
+
+
+// Registrar un pago sobre un crédito específico.
+// Administradores, empleados y clientes pueden acceder.
+// El controlador valida que un Cliente solo pueda pagar
+// sus propios créditos.
+Route::middleware([
+    'auth',
+    'no.cache',
+    'role:Administrador,Empleado,Cliente'
+])->group(function () {
+    Route::get('creditos/{credito}/pagos/crear', [PagoController::class, 'create'])
+        ->name('pagos.create');
+
+    Route::post('creditos/{credito}/pagos', [PagoController::class, 'store'])
+        ->name('pagos.store');
+});
+
 
 // Gestión exclusiva de empleados para Administradores
 Route::middleware([
@@ -68,14 +88,17 @@ Route::middleware([
 });
 
 
-
 // Detalle de crédito y comprobante de pago: accesibles para cualquier
 // usuario autenticado, pero el controlador valida que un Cliente solo
 // pueda ver sus propios créditos y pagos.
 Route::middleware(['auth', 'no.cache'])->group(function () {
-    Route::get('creditos/{credito}', [CreditoController::class, 'show'])->name('creditos.show');
-    Route::get('pagos/{pago}', [PagoController::class, 'show'])->name('pagos.show');
+    Route::get('creditos/{credito}', [CreditoController::class, 'show'])
+        ->name('creditos.show');
+
+    Route::get('pagos/{pago}', [PagoController::class, 'show'])
+        ->name('pagos.show');
 });
+
 
 // Vistas exclusivas del rol Cliente
 Route::middleware([
@@ -83,6 +106,9 @@ Route::middleware([
     'no.cache',
     'role:Cliente'
 ])->group(function () {
-    Route::get('mis-creditos', [CreditoController::class, 'misCreditos'])->name('creditos.mios');
-    Route::get('mis-pagos', [PagoController::class, 'misPagos'])->name('pagos.mios');
+    Route::get('mis-creditos', [CreditoController::class, 'misCreditos'])
+        ->name('creditos.mios');
+
+    Route::get('mis-pagos', [PagoController::class, 'misPagos'])
+        ->name('pagos.mios');
 });
