@@ -4,9 +4,12 @@ WORKDIR /var/www/html
 
 COPY . .
 
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+# 1. Dar permisos a storage y bootstrap/cache ANTES de correr composer
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
-RUN chown -R www-data:www-data storage bootstrap/cache
+# 2. Ahora sí ejecutamos composer install con los permisos listos
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
 ENV APP_ENV=production
 ENV APP_DEBUG=false
