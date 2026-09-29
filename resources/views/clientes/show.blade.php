@@ -17,6 +17,14 @@
                 <div class="col-md-4"><strong>Teléfono:</strong> {{ $cliente->telefono ?? '—' }}</div>
                 <div class="col-md-4"><strong>Correo:</strong> {{ $cliente->correo ?? '—' }}</div>
                 <div class="col-12 mt-2"><strong>Dirección:</strong> {{ $cliente->direccion ?? '—' }}</div>
+                <div class="col-12 mt-2">
+                    <strong>Usuario de acceso:</strong>
+                    @if ($cliente->usuario)
+                        {{ $cliente->usuario->username }}
+                    @else
+                        <span class="text-muted">Sin acceso al sistema</span>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

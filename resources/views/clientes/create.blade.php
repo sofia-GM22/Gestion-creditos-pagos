@@ -8,7 +8,7 @@
             <span class="section-kicker">Gestión de clientes</span>
             <h1 class="page-title">Nuevo cliente</h1>
             <p class="page-subtitle">
-                Registra la información del cliente para habilitar su gestión de créditos.
+                Registra la información del cliente y crea su usuario y contraseña de acceso al sistema.
             </p>
         </div>
     </div>
@@ -125,6 +125,8 @@
                         @enderror
                     </div>
                 </div>
+
+                @include('clientes._acceso')
 
                 <div class="form-actions mt-4 pt-3">
                     <button type="submit" class="btn btn-success">Guardar cliente</button>

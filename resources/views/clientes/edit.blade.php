@@ -8,7 +8,7 @@
             <span class="section-kicker">Gestión de clientes</span>
             <h1 class="page-title">Editar cliente</h1>
             <p class="page-subtitle">
-                Actualiza la información del cliente seleccionado.
+                Actualiza la información y las credenciales de acceso del cliente seleccionado.
             </p>
         </div>
     </div>
@@ -126,6 +126,8 @@
                         @enderror
                     </div>
                 </div>
+
+                @include('clientes._acceso', ['cliente' => $cliente])
 
                 <div class="form-actions mt-4 pt-3">
                     <button type="submit" class="btn btn-primary">Guardar cambios</button>

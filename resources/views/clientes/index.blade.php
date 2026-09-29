@@ -129,6 +129,7 @@
                         <th>Cliente</th>
                         <th>Documento</th>
                         <th>Teléfono</th>
+                        <th>Usuario</th>
                         <th>Estado</th>
                         <th class="text-end">Acciones</th>
                     </tr>
@@ -156,6 +157,10 @@
 
                         <td>
                             {{ $cliente->telefono ?? '—' }}
+                        </td>
+
+                        <td>
+                            {{ $cliente->usuario?->username ?? '—' }}
                         </td>
 
                         <td>
@@ -207,7 +212,7 @@
                 @empty
 
                     <tr>
-                        <td colspan="5">
+                        <td colspan="6">
                             <div class="empty-state">
                                 <div class="empty-state-icon">
                                     👥

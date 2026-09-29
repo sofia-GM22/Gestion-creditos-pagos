@@ -36,6 +36,8 @@ class ClienteValidationTest extends TestCase
         $this->actingAs($this->admin);
 
         $response = $this->post(route('clientes.store'), [
+            'username' => 'cliente_test_1',
+            'password' => 'Clave1234',
             'nombres' => 'Juan',
             'apellidos' => 'Perez',
             'documento_identidad' => '123456789',
@@ -57,6 +59,8 @@ class ClienteValidationTest extends TestCase
         $this->actingAs($this->admin);
 
         $response = $this->post(route('clientes.store'), [
+            'username' => 'cliente_test_2',
+            'password' => 'Clave1234',
             'nombres' => 'Juan',
             'apellidos' => 'Perez',
             'documento_identidad' => 'AS123 A123',
@@ -81,6 +85,8 @@ class ClienteValidationTest extends TestCase
     $this->actingAs($this->admin);
 
     $response = $this->post(route('clientes.store'), [
+        'username' => 'cliente_test_3',
+        'password' => 'Clave1234',
         'nombres' => 'Juan',
         'apellidos' => 'Perez',
         'documento_identidad' => '123456789',
@@ -92,6 +98,8 @@ class ClienteValidationTest extends TestCase
     $response->assertSessionHasErrors('telefono');
 
     $response = $this->post(route('clientes.store'), [
+        'username' => 'cliente_test_4',
+        'password' => 'Clave1234',
         'nombres' => 'Juan',
         'apellidos' => 'Perez',
         'documento_identidad' => '987654321',
