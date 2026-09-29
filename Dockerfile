@@ -6,6 +6,8 @@ USER root
 
 COPY . .
 
+COPY --chmod=755 docker/60-seed.sh /etc/entrypoint.d/60-seed.sh
+
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
